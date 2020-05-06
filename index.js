@@ -1,16 +1,15 @@
-const html = require ('./dummy')
+const html = require ('./dummy');
 var DOMParser = require('xmldom').DOMParser;
-var VB = require('./virtualDOM');
+const VB = require('./virtualDOM');
 var Section = require('./Section')
 var container = document.getElementById("container");
-var VirtualBox = new VB(container);
+var VirtualBox = new VB.VirtualBox(container);
 var sections = [];
 var currentSection;
 createNewSetion();
-var doc = new DOMParser().parseFromString(html);
+var doc = new DOMParser().parseFromString(html.html);
 
-console.log(doc)
-for(var i = 0 ; i < doc.childNodes.length ; i++){
+(function(){for(var i = 0 ; i < doc.childNodes.length ; i++){
     let currentElement = doc.childNodes[i];
     switch(currentElement.nodeName){
         case "h2" : 
@@ -20,6 +19,8 @@ for(var i = 0 ; i < doc.childNodes.length ; i++){
             addParagraph(currentElement.textContent);
     }
 }
+console.log(sections)}
+)()
 
 
 
@@ -65,7 +66,7 @@ function breakContent(text){
 
 function createNewSetion(){
 
-   sections.push(new Section()); 
+   sections.push(new Section.FlashcardSection()); 
    currentSection = sections[sections.length -1 ];
 }
 

@@ -1,59 +1,49 @@
-const path = require("path");
-const { LoaderOptionsPlugin, DefinePlugin } = require("webpack");
-const babelLoaderOptions = {
-  plugins: [
-    [
-      "transform-react-jsx",
-      {
-        pragma: "h"
-      }
-    ]
+/*globals require, __dirname*/
+const path = require('path');
+const appDir = path.resolve(__dirname);
+const distDir = path.resolve(__dirname, 'dist/');
 
-  ]
-};
-
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-module.exports = function (env) {
-  return {
-    mode : "development",
+module.exports = {
+    context: appDir,
+    mode: "development",
     entry: {
-      editor: ["./index.js"]
+        editor: './index.js',
+       
     },
     output: {
-      filename: "[name].js",
-      path: path.resolve(__dirname, "dist"),
-      libraryTarget: "umd"
+        path: distDir,
+        filename: '[name].js'
     },
     resolve: {
-      extensions: [".ts", ".tsx", ".js", ".json"]
-    },
-    // for enabling source maps,un-comment the below line
-    devtool: "source-map",
-    module: {
-      rules: [
-        {
-          enforce: "pre",
-          test: /\.tsx?$/,
-          loader: `babel-loader?${JSON.stringify(
-            babelLoaderOptions
-          )}!awesome-typescript-loader?tsconfig=./tsconfig.json`
-        },
-      ]
-    },
-    plugins: [
-      new CleanWebpackPlugin(),
-      new LoaderOptionsPlugin({
-        options: {
-          postcss: [autoprefixer()],
-          lessLoader: {
-            sourceMap: false
-          },
-          context: ""
+        modules: [
+            'node_modules'
+        ],
+        alias: {
+            stylesheets: path.resolve(__dirname, 'www/latest/stylesheets/')
         }
-      }),
-      new DefinePlugin({
-        'process.env.LeonardoScoreCardVersion': JSON.stringify(env.version)
-      })
-    ]
-  };
-};
+    },
+    module: {
+        rules: [
+            {
+                test: /\.js$/,
+                exclude: /node_modules/,
+                use: [
+                    {
+                        loader: 'babel-loader',
+                        options: {
+                            presets: [
+                                '@babel/preset-env', '@babel/preset-react'
+                            ],
+                            plugins: [
+                                '@babel/plugin-transform-react-jsx',
+                                '@babel/plugin-proposal-class-properties',
+                                '@babel/plugin-proposal-object-rest-spread',
+                                '@babel/plugin-syntax-dynamic-import'
+                            ]
+                        }
+                    }
+                ]
+            }
+        ]
+    }
+}
