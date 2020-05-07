@@ -1,7 +1,8 @@
 export class FlashcardSection{
 
 
-    FlashcardSection(){
+    constructor(){
+        this.cards = [];
         this.createNewCard();
     }
 
@@ -10,12 +11,12 @@ export class FlashcardSection{
             cardData : ""
         })
 
-        this.currentCard = this.card[this.card.length - 1];
+        this.currentCard = this.cards[this.cards.length - 1];
     }
 
 
     addHeader(headerText){
-        this.currentCard.cardData =  this.currentCard.cardData +  "<h1>" + headerText + "</h1>";
+        this.currentCard.cardData =  this.currentCard.cardData +  "<h2>" + headerText + "</h2>";
     }
 
 

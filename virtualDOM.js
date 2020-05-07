@@ -8,9 +8,11 @@ export class VirtualBox{
 
     initBoxes(container){
         this.contentBox = document.createElement('div');
-        this.contentBox.style.position = 'absolute';
-        this.contentBox.style.left = "-1000px";
-        this.contentBox.style.top = "-1000px";
+        // this.contentBox.style.position = 'absolute';
+        // this.contentBox.style.left = "-1000px";
+        // this.contentBox.style.top = "-1000px";
+        this.contentBox.style.border = "1px solid black";
+
         container.appendChild(this.contentBox);
     }
 
@@ -27,7 +29,7 @@ export class VirtualBox{
         header.innerText = text;
         headerTemplate.appendChild(header);
         this.contentBox.appendChild(headerTemplate);
-        if(contentBox.getClientRects()[0].height <= maxHeight ){
+        if(this.contentBox.getClientRects()[0].height <= this.maxHeight ){
             return true;
         }
     }
@@ -46,8 +48,8 @@ export class VirtualBox{
         paragraph.innerText = text;
         paragraphTemplate.appendChild(paragraph);
         this.contentBox.appendChild(paragraphTemplate);
-        if(this.contentBox.getClientRects()[0].height <= maxHeight ){
-            if(insert){
+        if(this.contentBox.getClientRects()[0].height <= this.maxHeight ){
+            if(insert === false){
                 this.contentBox.removeChild(paragraphTemplate);
             }
             return true;
@@ -64,4 +66,3 @@ export class VirtualBox{
           }
     }
 }
-

@@ -2,36 +2,60 @@ const html = require ('./dummy');
 var DOMParser = require('xmldom').DOMParser;
 const VB = require('./virtualDOM');
 var Section = require('./Section')
-var container = document.getElementById("container");
-var VirtualBox = new VB.VirtualBox(container);
+var container;
+var VirtualBox;
 var sections = [];
 var currentSection;
 createNewSetion();
 var doc = new DOMParser().parseFromString(html.html);
 
-(function(){for(var i = 0 ; i < doc.childNodes.length ; i++){
-    let currentElement = doc.childNodes[i];
-    switch(currentElement.nodeName){
-        case "h2" : 
-            addHeader(currentElement.textContent);
-            break;
-        case "p" :
-            addParagraph(currentElement.textContent);
+
+export var onClickHandler =  function(){
+    container = document.getElementById("preview");
+    VirtualBox = new VB.VirtualBox(container);
+    for(var i = 0 ; i < doc.childNodes.length ; i++){
+        let currentElement = doc.childNodes[i];
+        switch(currentElement.nodeName){
+            case "h2" : 
+                addHeader(currentElement.textContent);
+                break;
+            case "p" :
+                addParagraph(currentElement.textContent);
+        }
+    drawCard();
     }
 }
-console.log(sections)}
-)()
+
+function drawCard(){  
+    for(let i = 0; i<sections.length; i++  ){
+        for(let j = 0 ; j< sections[i].cards.length ; j++){
+            let VBOX = new VB.VirtualBox(container);
+            let document = new DOMParser().parseFromString(sections[i].cards[j].cardData)
+            for(let m = 0 ; m < document.childNodes.length ;m++ ){
+                let currentElement = document.childNodes[m];
+                switch(currentElement.nodeName){
+                    case "h2" : 
+                        VBOX.addHeader(currentElement.textContent);
+                        break;
+                    case "p" :
+                        VBOX.addParagraph(currentElement.textContent);
+                }
+            }
+        }
+    }
+}
 
 
 
 function addHeader(textContent){
-    if(currentSection.cards.length == 1 &&  currentSection.currentCard == ""){
+    if(currentSection.cards.length == 1 &&  currentSection.currentCard.cardData == ""){
         VirtualBox.addHeader(textContent);
         currentSection.addHeader(textContent);
     }
     else{
         createNewSetion();
         VirtualBox.reset();
+        currentSection.addHeader(textContent);
     }
 }
 
@@ -58,10 +82,10 @@ function breakContent(text){
 
     } 
 
-    addParagraph(addsentences.slice(0 , breakingPoint).join(" "));
+    addParagraph(sentences.slice(0 , breakingPoint).join(" "));
     currentSection.createNewCard();
     VirtualBox.reset();
-    addParagraph(sentences.slice(breakingPoint + 1 ,sentences.length).join(" "));
+    addParagraph(sentences.slice(breakingPoint ,sentences.length).join(" "));
 }
 
 function createNewSetion(){

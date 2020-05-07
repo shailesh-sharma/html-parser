@@ -4,15 +4,44 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
-<body>
-    <div id="container"  style="width: 100%; height: 100%;" >
+    <style>
+        .container{
+            display: flex;   
+        }
+        .editor{
+            width: 70%;
+        }
+        .preview{
+            width: 30%;
+        }
+        .edtitorArea{
+            width: 100%;
+        }
+    </style>
+    <script src="dist/editor.js">
 
+    </script>
+</head>
+
+<body>
+    <div class="container">
+        <div  class="editor">
+            <textarea class="edtitorArea" name="edtitorArea" id="editor" cols="30" rows="30"></textarea>
+        </div>
+        <div id="preview" class="preview">
+
+        </div>
+    </div>
+    <div>
+        <button onclick="handler()">Preview</button>
     </div>
 </body>
 
-<script src="dist/editor.js">
 
+<script>
+    function handler(){
+        onClickHandler()
+    }
 </script>
 </html>
 
