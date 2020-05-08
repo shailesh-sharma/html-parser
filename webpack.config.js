@@ -12,7 +12,8 @@ module.exports = {
     },
     output: {
         path: distDir,
-        filename: '[name].js'
+        filename: '[name].js',
+        libraryTarget: "umd"
     },
     resolve: {
         modules: [

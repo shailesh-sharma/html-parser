@@ -4,15 +4,19 @@ const VB = require('./virtualDOM');
 var Section = require('./Section')
 var container;
 var VirtualBox;
-var sections = [];
+var sections ;
 var currentSection;
-createNewSetion();
-var doc = new DOMParser().parseFromString(html.html);
+
+var doc;
 
 
 export var onClickHandler =  function(){
+    sections = [];
+    createNewSetion();
     container = document.getElementById("preview");
-    VirtualBox = new VB.VirtualBox(container);
+    let textArea = document.getElementById('editor');
+    doc = new DOMParser().parseFromString(textArea.value)
+    VirtualBox = new VB.VirtualBox(container , true);
     for(var i = 0 ; i < doc.childNodes.length ; i++){
         let currentElement = doc.childNodes[i];
         switch(currentElement.nodeName){
@@ -21,13 +25,18 @@ export var onClickHandler =  function(){
                 break;
             case "p" :
                 addParagraph(currentElement.textContent);
+                break;
+            case "img":
+                addImage(currentElement.getAttribute('src'));
         }
-    drawCard();
     }
+
+    drawCard();
 }
 
 function drawCard(){  
     for(let i = 0; i<sections.length; i++  ){
+    
         for(let j = 0 ; j< sections[i].cards.length ; j++){
             let VBOX = new VB.VirtualBox(container);
             let document = new DOMParser().parseFromString(sections[i].cards[j].cardData)
@@ -39,9 +48,17 @@ function drawCard(){
                         break;
                     case "p" :
                         VBOX.addParagraph(currentElement.textContent);
+                        break;
+                    case "img":
+                        VBOX.addImage(currentElement.getAttribute('src'));
                 }
             }
         }
+        let sectionBreak = document.createElement('div');
+        sectionBreak.innerText = "New section"
+        sectionBreak.style.width ="100%";
+        sectionBreak.style.background = "red";
+        container.appendChild(sectionBreak);
     }
 }
 
@@ -55,6 +72,7 @@ function addHeader(textContent){
     else{
         createNewSetion();
         VirtualBox.reset();
+        VirtualBox.addHeader(textContent);
         currentSection.addHeader(textContent);
     }
 }
@@ -65,6 +83,17 @@ function addParagraph(textContent){
         currentSection.addParagraph(textContent)
     }else{
         breakContent(textContent)
+    }
+}
+
+function addImage(src , width="100%"){
+    if(VirtualBox.addImage(src)){
+        currentSection.addImage(src)
+    }
+    else{
+        currentSection.createNewCard();
+        VirtualBox.reset();
+        currentSection.addImage(src);
     }
 }
 

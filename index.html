@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
@@ -9,13 +10,15 @@
             display: flex;   
         }
         .editor{
-            width: 70%;
+            width: 60%;
         }
         .preview{
-            width: 30%;
+            width: 40%;
+            height: 800px;
+            overflow: auto;
         }
         .edtitorArea{
-            width: 100%;
+            width: 90%;
         }
     </style>
     <script src="dist/editor.js">
@@ -26,7 +29,7 @@
 <body>
     <div class="container">
         <div  class="editor">
-            <textarea class="edtitorArea" name="edtitorArea" id="editor" cols="30" rows="30"></textarea>
+            <textarea class="edtitorArea" name="edtitorArea" id="editor" cols="25" rows="30"></textarea>
         </div>
         <div id="preview" class="preview">
 
@@ -34,13 +37,22 @@
     </div>
     <div>
         <button onclick="handler()">Preview</button>
+
     </div>
 </body>
 
 
 <script>
     function handler(){
-        onClickHandler()
+        reset();
+        onClickHandler();
+    }
+
+    function reset(){
+        var container = document.getElementById("preview")
+        while (container.firstChild) {
+            container.removeChild(container.lastChild);
+          }
     }
 </script>
 </html>

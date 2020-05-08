@@ -24,6 +24,11 @@ export class FlashcardSection{
         this.currentCard.cardData = this.currentCard.cardData + "<p>" + paragraphText + "</p>";
     }
 
+
+    addImage(scr){
+        this.currentCard.cardData = this.currentCard.cardData + "<img src='" +scr + "' />"
+    }
+
 }
 
 
